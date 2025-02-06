@@ -6,9 +6,9 @@
     <title>Prayer Wall</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
             padding: 20px;
         }
         #prayer-wall {
@@ -17,7 +17,7 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         }
         textarea {
             width: 100%;
@@ -28,23 +28,42 @@
             margin-bottom: 10px;
         }
         button {
-            background-color: #28a745;
+            background-color: #0288d1;
             color: white;
             border: none;
             padding: 10px;
             width: 100%;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #218838;
+            background-color: #0277bd;
         }
         .prayer-request {
-            background: #fff3cd;
+            background: #e3f2fd;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
-            border-left: 5px solid #ffbf00;
+            border-left: 5px solid #0288d1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .like-button {
+            background: none;
+            border: none;
+            color: #0288d1;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .like-button:hover {
+            color: #01579b;
+        }
+        .verse {
+            font-style: italic;
+            color: #555;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -54,6 +73,7 @@
         <p>Submit your prayer request below. Let's lift each other in prayer.</p>
         <textarea id="prayer-input" placeholder="Write your prayer request here..."></textarea>
         <button onclick="addPrayer()">Submit Prayer Request</button>
+        <div class="verse">"Therefore encourage one another and build each other up, just as in fact you are doing." - 1 Thessalonians 5:11</div>
         <div id="prayer-requests"></div>
     </div>
 
@@ -64,9 +84,23 @@
                 alert('Please enter a prayer request.');
                 return;
             }
+            
             let prayerDiv = document.createElement('div');
             prayerDiv.className = 'prayer-request';
-            prayerDiv.textContent = prayerText;
+            
+            let prayerContent = document.createElement('span');
+            prayerContent.textContent = prayerText;
+            
+            let likeButton = document.createElement('button');
+            likeButton.className = 'like-button';
+            likeButton.innerHTML = '❤️ 0';
+            likeButton.onclick = function () {
+                let count = parseInt(this.innerHTML.split(' ')[1]) + 1;
+                this.innerHTML = `❤️ ${count}`;
+            };
+            
+            prayerDiv.appendChild(prayerContent);
+            prayerDiv.appendChild(likeButton);
             document.getElementById('prayer-requests').prepend(prayerDiv);
             document.getElementById('prayer-input').value = '';
         }
